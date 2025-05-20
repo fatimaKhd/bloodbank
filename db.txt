@@ -1,0 +1,177 @@
+CREATE DATABASE bloodbank
+
+
+-- Table: Users
+CREATE TABLE Users (
+  user_id SERIAL PRIMARY KEY,
+  name VARCHAR(100),
+  email VARCHAR(100) UNIQUE,
+  password_hash VARCHAR(255),
+  role VARCHAR(10) CHECK (role IN ('donor', 'hospital', 'admin')),
+  phone VARCHAR(20),
+  address TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table: DonorDetails
+CREATE TABLE DonorDetails (
+  donor_id INT PRIMARY KEY REFERENCES Users(user_id),
+  blood_type VARCHAR(3),
+  birth_date DATE,
+  gender VARCHAR(10),
+  last_donation DATE,
+  next_eligible DATE,
+  health_status TEXT
+);
+
+-- Table: Appointments
+CREATE TABLE Appointments (
+  appointment_id SERIAL PRIMARY KEY,
+  donor_id INT REFERENCES DonorDetails(donor_id),
+  hospital_id INT REFERENCES Users(user_id),
+  scheduled_date TIMESTAMP,
+  status VARCHAR(20) CHECK (status IN ('scheduled', 'completed', 'cancelled', 'missed', 'rejected')),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE Appointments
+ADD COLUMN time_slot VARCHAR(50); 
+
+-- Table: BloodRequests
+CREATE TABLE BloodRequests (
+  request_id SERIAL PRIMARY KEY,
+  hospital_id INT REFERENCES Users(user_id),
+  blood_type VARCHAR(3),
+  units_needed INT,
+  urgency VARCHAR(10) CHECK (urgency IN ('normal', 'urgent')),
+  status VARCHAR(20) CHECK (status IN ('pending', 'approved', 'fulfilled', 'rejected')),
+  requested_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fulfilled_date TIMESTAMP
+);
+
+-- Table: BloodInventory
+CREATE TABLE BloodInventory (
+  blood_unit_id SERIAL PRIMARY KEY,
+  donor_id INT REFERENCES DonorDetails(donor_id),
+  hospital_id INT REFERENCES Users(user_id),
+  blood_type VARCHAR(3),
+  units_ml INT,
+  collected_date DATE,
+  expiry_date DATE,
+  status VARCHAR(20) CHECK (status IN ('stored', 'in_transit', 'delivered', 'used')),
+  current_location VARCHAR(100),
+  request_id INT REFERENCES BloodRequests(request_id)
+);
+
+-- Table: Tracking
+CREATE TABLE Tracking (
+  track_id SERIAL PRIMARY KEY,
+  blood_unit_id INT REFERENCES BloodInventory(blood_unit_id),
+  status VARCHAR(20) CHECK (status IN ('collected', 'stored', 'in_transit', 'delivered', 'used')),
+  location TEXT,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  request_id INT REFERENCES BloodRequests(request_id),
+  units_dispatched INT,
+  from_location TEXT
+);
+
+
+-- Table: AdminActions
+CREATE TABLE AdminActions (
+  action_id SERIAL PRIMARY KEY,
+  admin_id INT REFERENCES Users(user_id),
+  action_type VARCHAR(100),
+  entity_type VARCHAR(50),
+  entity_id INT,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table: AIMatchingLog
+CREATE TABLE AIMatchingLog (
+  match_id SERIAL PRIMARY KEY,
+  request_id INT REFERENCES BloodRequests(request_id),
+  suggested_donor_id INT REFERENCES DonorDetails(donor_id),
+  match_score FLOAT,
+  matched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE appointments DROP CONSTRAINT appointments_hospital_id_fkey;
+
+
+
+INSERT INTO BloodInventory (
+    donor_id,
+    hospital_id,
+    blood_type,
+    units_ml,
+    collected_date,
+    expiry_date,
+    status,
+    current_location,
+    request_id
+) VALUES 
+(3, 1, 'A+', 450, CURRENT_DATE - INTERVAL '3 days', CURRENT_DATE + INTERVAL '39 days', 'stored', 'Central Blood Bank', NULL),
+(5, 1, 'O-', 500, CURRENT_DATE - INTERVAL '10 days', CURRENT_DATE + INTERVAL '32 days', 'stored', 'Beirut Donation Center', NULL),
+(3, 1, 'B+', 400, CURRENT_DATE - INTERVAL '20 days', CURRENT_DATE + INTERVAL '22 days', 'in_transit', 'Tripoli Distribution Unit', NULL),
+(4, 1, 'AB-', 300, CURRENT_DATE - INTERVAL '15 days', CURRENT_DATE + INTERVAL '27 days', 'stored', 'Central Blood Bank', NULL);
+
+
+
+
+		INSERT INTO BloodRequests (hospital_id, blood_type, units_needed, urgency, status, requested_date)
+VALUES
+  (1, 'A+', 2, 'normal', 'pending', NOW() - INTERVAL '1 day'),
+  (1, 'O-', 3, 'urgent', 'approved', NOW() - INTERVAL '3 days'),
+  (1, 'B+', 1, 'normal', 'rejected', NOW() - INTERVAL '2 days'),
+  (1, 'AB-', 4, 'urgent', 'fulfilled', NOW() - INTERVAL '5 days'),
+  (1, 'O+', 2, 'normal', 'pending', NOW() - INTERVAL '6 hours'),
+  (1, 'A-', 3, 'urgent', 'approved', NOW() - INTERVAL '7 days');
+
+
+
+CREATE TABLE notifications (
+    id SERIAL PRIMARY KEY,
+    recipient VARCHAR(255) NOT NULL,
+    subject VARCHAR(255),
+    message TEXT NOT NULL,
+    event VARCHAR(50),
+    blood_type VARCHAR(10),
+    units INTEGER,
+    type VARCHAR(20), -- email, sms, app
+    status VARCHAR(20) DEFAULT 'pending', -- sent, failed, pending
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE Users ADD COLUMN email_notifications_enabled BOOLEAN DEFAULT TRUE;
+
+
+
+CREATE TABLE SystemSettings (
+    critical_stock_alerts BOOLEAN DEFAULT TRUE,
+    appointment_reminders BOOLEAN DEFAULT TRUE,
+    donation_thank_you BOOLEAN DEFAULT TRUE
+);
+
+INSERT INTO systemsettings (
+    critical_stock_alerts,
+    appointment_reminders,
+    donation_thank_you
+) VALUES (
+    TRUE,
+    TRUE,
+    TRUE
+);
+
+
+ALTER TABLE Tracking
+  ADD COLUMN request_id INT REFERENCES BloodRequests(request_id),
+  ADD COLUMN units_dispatched INT,
+  ADD COLUMN from_location VARCHAR(100);
+
+
+ALTER TABLE bloodrequests
+  DROP CONSTRAINT bloodrequests_urgency_check,
+  ADD CONSTRAINT bloodrequests_urgency_check
+  CHECK (urgency IN ('normal', 'urgent' ,'critical'));
