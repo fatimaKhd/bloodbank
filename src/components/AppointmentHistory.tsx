@@ -66,7 +66,7 @@ export const AppointmentHistory = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       const token = localStorage.getItem('authToken');
-      const res = await fetch('http://localhost:5000/appointments/donor', {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/appointments/donor`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -96,7 +96,7 @@ export const AppointmentHistory = () => {
     const token = localStorage.getItem("authToken");
 
     try {
-      const res = await fetch(`http://localhost:5000/appointments/cancel/${appointmentId}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/appointments/cancel/${appointmentId}`, {
         method: "PATCH", // or "DELETE" if you're deleting the appointment
         headers: {
           Authorization: `Bearer ${token}`

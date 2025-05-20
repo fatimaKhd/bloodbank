@@ -41,7 +41,7 @@ export const Chatbot = () => {
   //   const fetchSuggestedQuestions = async () => {
   //     setIsLoadingSuggestions(true);
   //     try {
-  //       const response = await fetch("http://localhost:5000/chatbot-responses"); // Update URL if needed
+  //       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/chatbot-responses`); // Update URL if needed
   //       if (!response.ok) {
   //         throw new Error("Failed to fetch suggested questions");
   //       }
@@ -73,7 +73,7 @@ export const Chatbot = () => {
     const fetchSuggestedQuestions = async () => {
       setIsLoadingSuggestions(true);
       try {
-        const response = await fetch("http://localhost:5000/chatbot", {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/chatbot`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -169,7 +169,7 @@ export const Chatbot = () => {
     setShowSuggestions(false);
 
     try {
-      const response = await fetch('http://localhost:5000/ai-chatbot-response', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ai-chatbot-response`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

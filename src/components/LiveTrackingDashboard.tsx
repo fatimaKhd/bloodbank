@@ -58,7 +58,7 @@ export const LiveTrackingDashboard = () => {
     setIsLoading(true);
     try {
       // Step 1: Fetch blood units
-      const bloodRes = await fetch('http://localhost:5000/blood-inventory?order=donation_date_desc');
+      const bloodRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/blood-inventory?order=donation_date_desc`);
       if (!bloodRes.ok) throw new Error('Failed to fetch blood units');
       const data = await bloodRes.json();
   
@@ -72,11 +72,11 @@ export const LiveTrackingDashboard = () => {
           // Step 3: Fetch donor and profile data if donor_id exists
           if (unit.donor_id) {
             try {
-              const donorRes = await fetch(`http://localhost:5000/donors/${unit.donor_id}`);
+              const donorRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/donors/${unit.donor_id}`);
               const donor = donorRes.ok ? await donorRes.json() : null;
   
               if (donor?.user_id) {
-                const profileRes = await fetch(`http://localhost:5000/users/${donor.user_id}`);
+                const profileRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/${donor.user_id}`);
                 const profile = profileRes.ok ? await profileRes.json() : null;
   
                 if (profile) {

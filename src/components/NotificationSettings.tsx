@@ -19,7 +19,7 @@ export const NotificationSettings = () => {
     const fetchEmailAndPreferences = async () => {
       try {
         const token = localStorage.getItem("authToken");
-        const res = await fetch("http://localhost:5000/auth/me", {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/me`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();
@@ -41,7 +41,7 @@ export const NotificationSettings = () => {
     setEmailEnabled(checked);
     try {
       const token = localStorage.getItem("authToken");
-      const res = await fetch("http://localhost:5000/api/user/preferences", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/preferences`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export const NotificationSettings = () => {
     setTestLoading(true);
     try {
       const token = localStorage.getItem("authToken");
-      const res = await fetch("http://localhost:5000/api/send-notification", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/send-notification`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

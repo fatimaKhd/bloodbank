@@ -27,7 +27,7 @@ export function useSupabase() {
         }
   
         // Fetch user session
-        const sessionRes = await fetch('http://localhost:5000/auth/session', {
+        const sessionRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/session`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (!sessionRes.ok) throw new Error('Failed to fetch session');
@@ -36,7 +36,7 @@ export function useSupabase() {
         setUser(session.user);
   
         // Fetch user profile
-        const profileRes = await fetch(`http://localhost:5000/profiles/${session.user.id}`, {
+        const profileRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/profiles/${session.user.id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (!profileRes.ok) throw new Error('Failed to fetch profile');

@@ -21,7 +21,7 @@ export const DonorRequestManagement = () => {
     const fetchRequests = async () => {
         try {
             const token = localStorage.getItem('authToken');
-            const res = await fetch('http://localhost:5000/api/admin/donor-requests', {
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/admin/donor-requests`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -40,7 +40,7 @@ export const DonorRequestManagement = () => {
     const handleAction = async (donationId: number, action: 'approve' | 'reject' | 'missed') => {
         try {
             const token = localStorage.getItem('authToken');
-            const res = await fetch(`http://localhost:5000/api/admin/${action}-donor/${donationId}`, {
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/admin/${action}-donor/${donationId}`, {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${token}`,

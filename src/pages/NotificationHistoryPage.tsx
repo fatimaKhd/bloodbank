@@ -41,7 +41,7 @@ const NotificationHistoryPage = () => {
 
     const fetchNotifications = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/notifications', {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/notifications`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

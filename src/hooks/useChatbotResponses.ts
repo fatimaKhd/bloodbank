@@ -21,7 +21,7 @@ export function useChatbotResponses() {
       try {
         setLoading(true);
         
-        const res = await fetch('http://localhost:5000/chatbot-responses');
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/chatbot-responses`);
         if (!res.ok) throw new Error('Failed to fetch chatbot responses');
         
         const data = await res.json();
@@ -40,7 +40,7 @@ export function useChatbotResponses() {
 
   const addResponse = async (newResponse: Omit<ChatbotResponse, 'id' | 'created_at'>) => {
     try {
-      const res = await fetch('http://localhost:5000/chatbot-responses', {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/chatbot-responses`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -195,7 +195,7 @@ const Donate = () => {
           </div>
         </section>
         
-        {/* Donation Locations */}
+        {/* Donation Locations
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
@@ -260,7 +260,7 @@ const Donate = () => {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
         
         {/* Call to Action */}
         <section className="py-16 bg-white">

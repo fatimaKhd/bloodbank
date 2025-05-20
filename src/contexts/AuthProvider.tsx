@@ -19,7 +19,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Adjust your backend URL
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = `${import.meta.env.VITE_BACKEND_URL}`;
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any | null>(null);

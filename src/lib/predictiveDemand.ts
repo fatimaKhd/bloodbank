@@ -2,7 +2,7 @@ import { toast } from "sonner";
 
 // Example data fetching using fetch() or axios (based on your backend API setup)
 // const API_URL = 'https://your-api-url.com'; // Replace with your API endpoint
-const API_URL = 'http://localhost:5000';
+const API_URL = `${import.meta.env.VITE_BACKEND_URL}`;
 
 type BloodType = 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
 

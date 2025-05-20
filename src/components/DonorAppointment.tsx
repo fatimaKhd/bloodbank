@@ -33,7 +33,7 @@ export const DonorAppointment = () => {
     queryKey: ['donationCenters'],
     queryFn: async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/donation_centers');
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/donation_centers`);
         if (!response.ok) {
           throw new Error('Failed to fetch donation centers');
         }
@@ -60,7 +60,7 @@ export const DonorAppointment = () => {
   //     }
 
   //     // Fetch user profile from your backend API
-  //     const response = await fetch('http://localhost:5000/user/profile', {
+  //     const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/profile`, {
   //       method: 'GET',
   //       headers: {
   //         'Authorization': `Bearer ${token}`, // Pass the token for authentication
@@ -75,7 +75,7 @@ export const DonorAppointment = () => {
   //     const userData = await response.json();
 
   //     // Get the donor profile from your backend API as well
-  //     const donorResponse = await fetch(`http://localhost:5000/donor/profile/${userData.id}`, {
+  //     const donorResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/donor/profile/${userData.id}`, {
   //       method: 'GET',
   //       headers: {
   //         'Authorization': `Bearer ${token}`, // Pass the token for authentication
@@ -113,7 +113,7 @@ export const DonorAppointment = () => {
         throw new Error("Token is missing");
       }
 
-      const response = await fetch('http://localhost:5000/appointments', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/appointments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

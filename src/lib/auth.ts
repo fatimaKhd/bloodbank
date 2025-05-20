@@ -29,7 +29,7 @@ export const isAuthorized = (requiredPermission: Permission): boolean => {
 // In your auth helper (auth.js or similar)
 export const login = async (email: string, password: string) => {
   try {
-    const response = await fetch('http://localhost:5000/api/login', {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ export const logout = (): void => {
 
 export const register = async (data: any) => {
   try {
-    const response = await fetch('http://localhost:5000/api/register', {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

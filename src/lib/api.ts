@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+// const import.meta.env.VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
 // Function to record a donation after an appointment is completed
 export async function recordDonation(donorId, bloodType, centerId, appointmentId) {
@@ -6,7 +6,7 @@ export async function recordDonation(donorId, bloodType, centerId, appointmentId
     const expiryDate = new Date();
     expiryDate.setDate(expiryDate.getDate() + 42);
 
-    const donationRes = await fetch(`${API_BASE_URL}/donations`, {
+    const donationRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/donations`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -24,14 +24,14 @@ export async function recordDonation(donorId, bloodType, centerId, appointmentId
     const data = await donationRes.json();
 
     if (appointmentId) {
-      await fetch(`${API_BASE_URL}/appointments/${appointmentId}`, {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/appointments/${appointmentId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'completed' })
       });
     }
 
-    await fetch(`${API_BASE_URL}/donors/${donorId}`, {
+    await fetch(`${import.meta.env.VITE_BACKEND_URL}/donors/${donorId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ last_donation_date: new Date().toISOString() })
@@ -49,7 +49,7 @@ export async function recordDonation(donorId, bloodType, centerId, appointmentId
 // Function to get current blood inventory levels
 export async function getBloodInventory() {
   try {
-    const res = await fetch(`${API_BASE_URL}/inventory`);
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/inventory`);
     if (!res.ok) throw new Error('Failed to fetch inventory');
     const data = await res.json();
     return data;
@@ -62,7 +62,7 @@ export async function getBloodInventory() {
 // Function to get stock alerts
 export async function getStockAlerts() {
   try {
-    const res = await fetch(`${API_BASE_URL}/alerts`);
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/alerts`);
     if (!res.ok) throw new Error('Failed to fetch alerts');
     return await res.json();
   } catch (error) {
@@ -74,7 +74,7 @@ export async function getStockAlerts() {
 // Update predictive demand from new donations or requests
 async function updatePredictiveDemand(bloodType) {
   try {
-    await fetch(`${API_BASE_URL}/predictive-demand/${bloodType}`, {
+    await fetch(`${import.meta.env.VITE_BACKEND_URL}/predictive-demand/${bloodType}`, {
       method: 'PATCH'
     });
   } catch (error) {

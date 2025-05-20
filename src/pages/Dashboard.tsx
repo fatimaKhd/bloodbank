@@ -117,7 +117,7 @@ const Dashboard = () => {
   //   const fetchRecentDonations = async () => {
   //     try {
   //       const token = localStorage.getItem('authToken');
-  //       const res = await fetch('http://localhost:5000/api/donor/recent-donations', {
+  //       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/donor/recent-donations`, {
   //         headers: {
   //           Authorization: `Bearer ${token}`,
   //         },
@@ -148,7 +148,7 @@ const Dashboard = () => {
         const token = localStorage.getItem('authToken');
         if (!token) return; // Don't fetch if not authenticated
 
-        const res = await fetch("http://localhost:5000/api/system-settings", {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/system-settings`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -176,7 +176,7 @@ const Dashboard = () => {
       const token = localStorage.getItem('authToken');
       if (!token) return; // Don't fetch if not authenticated
 
-      const res = await fetch("http://localhost:5000/api/system-settings", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/system-settings`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -198,7 +198,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchStock = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/inventory");
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/inventory`);
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to fetch inventory");
 
@@ -249,7 +249,7 @@ const Dashboard = () => {
   // useEffect(() => {
   //   const fetchStock = async () => {
   //     try {
-  //       const res = await fetch("http://localhost:5000/api/inventory");
+  //       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/inventory`);
   //       const data = await res.json();
   //       if (res.ok) {
   //         // Add `status` based on logic
@@ -279,7 +279,7 @@ const Dashboard = () => {
   const fetchDonationHistory = async () => {
     const token = localStorage.getItem('authToken');
     const donorId = localStorage.getItem('userId');
-    const res = await fetch(`http://localhost:5000/appointments/history/${donorId}`, {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/appointments/history/${donorId}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
     const data = await res.json();
@@ -309,7 +309,7 @@ const Dashboard = () => {
   const [systemHealth, setSystemHealth] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/system/health")
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/system/health`)
       .then((res) => res.json())
       .then((data) => {
         console.log("System health API response:", data); // ✅ check this
@@ -329,7 +329,7 @@ const Dashboard = () => {
         const token = localStorage.getItem("authToken");
         if (!token) return;
 
-        const res = await fetch("http://localhost:5000/api/notifications", {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/notifications`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -369,7 +369,7 @@ const Dashboard = () => {
     const fetchInventory = async () => {
       try {
         const hospitalId = localStorage.getItem("hospitalId");
-        const res = await fetch(`http://localhost:5000/api/hospital_inventory/${hospitalId}`);
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/hospital_inventory/${hospitalId}`);
         const result = await res.json();
 
         const defaultTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -401,7 +401,7 @@ const Dashboard = () => {
 
       const fetchHospitalData = async () => {
         try {
-          const res = await fetch(`http://localhost:5000/api/hospital/requests/${hospitalId}`, {
+          const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/hospital/requests/${hospitalId}`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -489,7 +489,7 @@ const Dashboard = () => {
         const token = localStorage.getItem("authToken");
         const adminId = localStorage.getItem("userId");
 
-        fetch(`http://localhost:5000/api/admin/dashboard/${adminId}`, {
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/admin/dashboard/${adminId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -616,7 +616,7 @@ const Dashboard = () => {
       if (!donorId) return;
 
       const token = localStorage.getItem("authToken");
-      const res = await fetch(`http://localhost:5000/appointments/latest/${donorId}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/appointments/latest/${donorId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -646,7 +646,7 @@ const Dashboard = () => {
 
     const fetchDonations = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/donations/${donorId}`, {
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/donations/${donorId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -799,7 +799,7 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem('authToken');
 
-      const res = await fetch("http://localhost:5000/api/send-notification", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/send-notification`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

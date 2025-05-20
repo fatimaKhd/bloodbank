@@ -52,7 +52,7 @@ export const BloodRequestForm = () => {
   //   // Fetch hospitals from the database
   //   const fetchHospitals = async () => {
   //     try {
-  //       const response = await fetch('http://localhost:5000/api/hospitals'); // Adjust the URL to match your backend route
+  //       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/hospitals`); // Adjust the URL to match your backend route
   //       if (!response.ok) {
   //         throw new Error('Failed to load hospitals');
   //       }
@@ -110,7 +110,7 @@ export const BloodRequestForm = () => {
         notes,
       };
 
-      const res = await fetch("http://localhost:5000/api/requests", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/requests`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -281,12 +281,12 @@ export const BloodRequestManagement = () => {
       try {
         // Fetch hospitals
         // Fetch hospitals
-        const hospitalRes = await fetch("http://localhost:5000/api/hospitals");
+        const hospitalRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/hospitals`);
         const hospitalsData = await hospitalRes.json();
         setHospitals(hospitalsData || []);
 
         const userRole = localStorage.getItem("userRole");
-        let requestUrl = "http://localhost:5000/api/requests/all";
+        let requestUrl = `${import.meta.env.VITE_BACKEND_URL}/api/requests/all`;
 
         // Only require hospitalId if user is a hospital
         if (userRole === "hospital") {
@@ -303,7 +303,7 @@ export const BloodRequestManagement = () => {
 
 
 
-        // const requestRes = await fetch("http://localhost:5000/api/requests/all");
+        // const requestRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/requests/all`);
         const rawText = await requestRes.text();
 
 
@@ -372,7 +372,7 @@ export const BloodRequestManagement = () => {
     try {
       const token = localStorage.getItem('authToken');
 
-      const res = await fetch(`http://localhost:5000/api/hospital/approve-request/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/hospital/approve-request/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -399,7 +399,7 @@ export const BloodRequestManagement = () => {
 
   const handleReject = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/requests/${id}/reject`, { method: "POST" });
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/requests/${id}/reject`, { method: "POST" });
       if (!res.ok) throw new Error("Rejection failed");
       setRequests(requests.map(r => r.id === id ? { ...r, status: 'rejected' } : r));
       toast.error("Rejected");

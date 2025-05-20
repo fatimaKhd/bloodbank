@@ -19,7 +19,7 @@ export function usePredictiveDemand() {
     const fetchDemandData = async () => {
       try {
         setLoading(true);
-        const res = await fetch('http://localhost:5000/predictive-demand');
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/predictive-demand`);
         if (!res.ok) throw new Error('Failed to fetch predictive demand');
         const data = await res.json();
   

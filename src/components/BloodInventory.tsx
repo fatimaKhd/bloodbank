@@ -72,13 +72,13 @@ export const BloodInventory = ({ simpleView = false }: BloodInventoryProps) => {
       setLoading(true);
       try {
         // Fetch locations first
-        const responseLocations = await fetch('http://localhost:5000/api/donation_centers');
+        const responseLocations = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/donation_centers`);
         if (!responseLocations.ok) throw new Error('Failed to fetch locations');
         const locationsData = await responseLocations.json();
         setLocations(locationsData || []);
 
         // Fetch blood inventory
-        const responseInventory = await fetch('http://localhost:5000/api/inventory');
+        const responseInventory = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/inventory`);
         if (!responseInventory.ok) throw new Error('Failed to fetch blood inventory');
         const data = await responseInventory.json();
 
@@ -157,7 +157,7 @@ export const BloodInventory = ({ simpleView = false }: BloodInventoryProps) => {
       };
 
       // Send data to the backend API (Replace with your actual backend endpoint)
-      const response = await fetch('http://localhost:5000/api/blood_inventory', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/blood_inventory`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

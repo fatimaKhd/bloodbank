@@ -21,7 +21,7 @@ export const AdminTrackingTab = () => {
             try {
                 const token = localStorage.getItem("authToken");
 
-                const res = await fetch("http://localhost:5000/api/tracking/logs", {
+                const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/tracking/logs`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

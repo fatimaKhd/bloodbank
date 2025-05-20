@@ -68,8 +68,8 @@ const Index = () => {
     const fetchData = async () => {
       try {
         const [donationRes, requestRes] = await Promise.all([
-          fetch(`http://localhost:5000/api/v1/donors`),
-          fetch(`http://localhost:5000/api/requests/all?hospital_id=1`) // Replace with dynamic hospital_id if needed
+          fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/donors`),
+          fetch(`${import.meta.env.VITE_BACKEND_URL}/api/requests/all?hospital_id=1`) // Replace with dynamic hospital_id if needed
         ]);
 
         const donationData = await donationRes.json();

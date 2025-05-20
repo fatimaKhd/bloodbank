@@ -37,13 +37,13 @@ export const BloodInventoryTracking = () => {
     try {
 
 
-      const response = await fetch('http://localhost:5000/inventory?sort=donation_date_desc');
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/inventory?sort=donation_date_desc`);
       if (!response.ok) throw new Error('Failed to fetch inventory');
 
       const data = await response.json();
 
         
-      if (error) throw error;
+      if (Error) throw Error;
       
       // Transform data
       const transformedUnits: BloodUnit[] = await Promise.all(data.map(async (unit) => {

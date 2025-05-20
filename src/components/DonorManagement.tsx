@@ -25,7 +25,7 @@ export const DonorManagement = () => {
     queryKey: ['donors'],
     queryFn: async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/v1/donors');
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/donors`);
         if (!res.ok) throw new Error("Failed to fetch donors");
         const data = await res.json();
         return data.map((row) => ({
@@ -48,7 +48,7 @@ export const DonorManagement = () => {
   const updateDonor = useMutation({
     mutationFn: async () => {
       if (!donorId) throw new Error("Missing donor ID");
-      const res = await fetch(`http://localhost:5000/api/v1/donors/${donorId}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/donors/${donorId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -30,7 +30,7 @@ export const Footer = () => {
     const fetchFooterData = async () => {
       try {
         // Fetch contact info
-        const contactRes = await fetch(`http://localhost:5000/settings/contact-info`);
+        const contactRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/settings/contact-info`);
 
         const contentType = contactRes.headers.get("content-type");
 
@@ -50,7 +50,7 @@ export const Footer = () => {
         setContactInfo(contact);
 
         // Fetch social links
-        const socialRes = await fetch(`http://localhost:5000/settings/social-links`);
+        const socialRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/settings/social-links`);
         if (socialRes.ok) {
           const social = await socialRes.json();
           setSocialLinks(social);
