@@ -585,28 +585,26 @@ const Dashboard = () => {
   useEffect(() => {
     if (userRole === 'hospital') {
       const storedRequests = localStorage.getItem('bloodRequests');
-      if (storedRequests) {
-        const requests = JSON.parse(storedRequests);
-        const hospitalName = localStorage.getItem('userName');
+      if (!storedRequests) return;
 
-        // Filter requests for this hospital
-        const hospitalRequests = requests.filter((r: any) => r.hospital === hospitalName);
+      const requests = JSON.parse(storedRequests);
+      const hospitalName = localStorage.getItem('userName');
 
-        setHospitalData({
-          ...hospitalData,
-          pendingRequests: hospitalRequests.filter((r: any) => r.status === 'pending').length,
-          approvedRequests: hospitalRequests.filter((r: any) => r.status === 'approved').length,
-          recentRequests: hospitalRequests.slice(0, 3).map((r: any) => ({
-            date: r.date,
-            type: r.bloodType,
-            units: r.units,
-            status: r.status
-          }))
-        });
-      }
+      const hospitalRequests = requests.filter((r: any) => r.hospital === hospitalName);
+
+      setHospitalData((prev) => ({
+        ...prev,
+        pendingRequests: hospitalRequests.filter((r: any) => r.status === 'pending').length,
+        approvedRequests: hospitalRequests.filter((r: any) => r.status === 'approved').length,
+        recentRequests: hospitalRequests.slice(0, 3).map((r: any) => ({
+          date: r.date,
+          type: r.bloodType,
+          units: r.units,
+          status: r.status
+        }))
+      }));
     }
-  }, [userRole, hospitalData]);
-
+  }, [userRole]); // ✅ remove hospitalData dependency
 
 
   useEffect(() => {

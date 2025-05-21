@@ -148,7 +148,7 @@ export const BloodRequestForm = () => {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <Label htmlFor="hospital">Hospital/Clinic Name <span className="text-red-500">*</span></Label>
             {localStorage.getItem('userRole') === 'hospital' ? (
               <Input
@@ -169,7 +169,7 @@ export const BloodRequestForm = () => {
                 </SelectContent>
               </Select>
             )}
-          </div>
+          </div> */}
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
