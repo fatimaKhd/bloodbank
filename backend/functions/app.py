@@ -50,11 +50,7 @@ app = Flask(__name__)
 # CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
 # ✅ Allow only your Vercel frontend
 
-CORS(app, origins=[
-    "https://bloodbank-gbftguc5t-12231897-liuedulbs-projects.vercel.app",  # Your actual frontend
-    "https://bloodbank-lemon.vercel.app",  # Any other domain you're using
-    "http://localhost:8080"  # Local dev
-], supports_credentials=True)
+CORS(app, origins="*", supports_credentials=True)
 
 @app.after_request
 def add_cors_headers(response):
