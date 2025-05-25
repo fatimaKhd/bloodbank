@@ -51,8 +51,9 @@ app = Flask(__name__)
 # ✅ Allow only your Vercel frontend
 
 CORS(app, origins=[
-    re.compile(r"https://bloodbank-[a-z0-9\-]+\.vercel\.app"),
-    "http://localhost:8080"
+    "https://bloodbank-gbftguc5t-12231897-liuedulbs-projects.vercel.app",  # Your actual frontend
+    "https://bloodbank-lemon.vercel.app",  # Any other domain you're using
+    "http://localhost:8080"  # Local dev
 ], supports_credentials=True)
 
 # 🔍 Log the Origin of each request (for debugging CORS)
