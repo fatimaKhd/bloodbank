@@ -1,22 +1,37 @@
+# used in the generate random letters from ASCII for the forget password
 import string
 from psycopg2.extras import RealDictCursor
+# we used for the random password generation in case of forget password
 import random
+# used for add or subtract for date time
 from datetime import datetime
+# Micro web framework to create web APIs.
+# the jsonify to Return JSON responses
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_cors import cross_origin
+# used to use the globale vatiable from the env file
 import os
+# for PostgreSQL database
 import psycopg2
 import openai
+# Loads environment variables from a .env file
 from dotenv import load_dotenv
+# used for regualr expression to compare values
 import re
+# Access HTTP request data
 import requests
+# JSON Web Tokens — often used to create access tokens for user authentication
 import jwt
 from datetime import datetime, timedelta
+# used to generate the token to generate random variable
 import secrets
+# Used to securely hash and verify passwords (never store plain text passwords!).
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+# to use the openai api
 from openai import OpenAI
+# used for the connection with the email to send email
 import smtplib
 from email.mime.text import MIMEText
 from flask import request
