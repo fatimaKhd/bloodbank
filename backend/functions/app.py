@@ -35,6 +35,7 @@ from openai import OpenAI
 import smtplib
 from email.mime.text import MIMEText
 from flask import request
+import re
 
 
 JWT_SECRET_KEY = secrets.token_urlsafe(32)  # Generates a 32-byte URL-safe token
@@ -48,12 +49,17 @@ app = Flask(__name__)
 # CORS(app, supports_credentials=True)
 # CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
 # ✅ Allow only your Vercel frontend
+
 CORS(app, origins=[
-    r"https://bloodbank-[a-z0-9\-]+\.vercel\.app",
+    re.compile(r"https://bloodbank-[a-z0-9\-]+\.vercel\.app"),
     "http://localhost:8080"
 ], supports_credentials=True)
 
-
+# 🔍 Log the Origin of each request (for debugging CORS)
+@app.before_request
+def log_origin():
+    print("Origin:", request.headers.get("Origin"))
+    
 # Generate JWT Token
 def generate_jwt_token(user_id):
     payload = {
