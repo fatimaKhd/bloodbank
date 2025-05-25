@@ -732,6 +732,9 @@ def update_donor(donor_id):
 
 @app.route('/api/donation_centers', methods=['GET'])
 def get_donation_centers():
+     print("📥 METHOD:", request.method)
+    print("📥 ORIGIN:", request.headers.get("Origin"))
+    print("📥 PATH:", request.path)
     try:
         cursor.execute("SELECT id, name FROM donation_centers")  # Assuming you have a table called donation_centers
         donation_centers = cursor.fetchall()
