@@ -47,34 +47,7 @@ load_dotenv()
 app = Flask(__name__)
 # CORS(app)
 # CORS(app, supports_credentials=True)
-# CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
-# ✅ Allow only your Vercel frontend
-
-# Step 1: Dynamically allow any Vercel deployment + localhost
-CORS(app, origins=[
-    r"https://bloodbank-[a-z0-9\-]+\.vercel\.app",
-    "http://localhost:8080"
-], supports_credentials=True)
-
-# Step 2: Force CORS headers into ALL responses (optional but safe)
-@app.after_request
-def add_cors_headers(response):
-    origin = request.headers.get('Origin')
-    if origin and (
-        origin.startswith("https://bloodbank-") and origin.endswith(".vercel.app")
-        or origin == "http://localhost:8080"
-    ):
-        response.headers["Access-Control-Allow-Origin"] = origin
-        response.headers["Access-Control-Allow-Credentials"] = "true"
-        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
-        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-    return response
-
-# Step 3: Handle OPTIONS explicitly for preflight
-@app.route("/<path:path>", methods=["OPTIONS"])
-def handle_options(path):
-    return '', 204
-
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
     
 # Generate JWT Token
 def generate_jwt_token(user_id):
