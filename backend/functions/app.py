@@ -46,8 +46,11 @@ load_dotenv()
 app = Flask(__name__)
 # CORS(app)
 # CORS(app, supports_credentials=True)
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
-
+# CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
+# ✅ Allow only your Vercel frontend
+CORS(app, origins=[
+    "https://bloodbank-8jt1gmg6x-12231897-liuedulbs-projects.vercel.app"
+], supports_credentials=True)
 
 # Generate JWT Token
 def generate_jwt_token(user_id):
