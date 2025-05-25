@@ -56,10 +56,27 @@ CORS(app, origins=[
     "http://localhost:8080"  # Local dev
 ], supports_credentials=True)
 
-# 🔍 Log the Origin of each request (for debugging CORS)
-@app.before_request
-def log_origin():
-    print("Origin:", request.headers.get("Origin"))
+@app.after_request
+def add_cors_headers(response):
+    origin = request.headers.get("Origin")
+    if origin:
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
+@app.route('/<path:path>', methods=['OPTIONS'])
+def handle_options(path):
+    response = app.make_default_options_response()
+    headers = response.headers
+
+    headers['Access-Control-Allow-Origin'] = request.headers.get('Origin', '*')
+    headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    headers['Access-Control-Allow-Credentials'] = 'true'
+
+    return response
+
     
 # Generate JWT Token
 def generate_jwt_token(user_id):
@@ -732,9 +749,6 @@ def update_donor(donor_id):
 
 @app.route('/api/donation_centers', methods=['GET'])
 def get_donation_centers():
-     print("📥 METHOD:", request.method)
-    print("📥 ORIGIN:", request.headers.get("Origin"))
-    print("📥 PATH:", request.path)
     try:
         cursor.execute("SELECT id, name FROM donation_centers")  # Assuming you have a table called donation_centers
         donation_centers = cursor.fetchall()
